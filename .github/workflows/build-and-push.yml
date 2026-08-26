@@ -6,9 +6,6 @@ on:
     tags: ['v*']
   workflow_dispatch:
 
-env:
-  IMAGE_NAME: vampirspiel
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -20,8 +17,8 @@ jobs:
           node-version: '22'
           cache: npm
 
-      # Kein npm install: schlägt npm ci fehl, ist das Lockfile kaputt oder
-      # unvollständig, und der Docker-Build würde später sowieso scheitern.
+      # Kein Fallback auf npm install: schlägt npm ci fehl, ist das Lockfile
+      # kaputt oder unvollständig, und der Docker-Build scheitert später sowieso.
       - run: npm ci --no-audit --no-fund
 
       - run: npm run build
@@ -44,11 +41,14 @@ jobs:
           username: ${{ secrets.admin }}
           password: ${{ secrets.password }}
 
-      # latest auf main, zusätzlich der Commit-SHA und bei Tags die Version.
       - id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.host }}/vampirspiel:latest
+          # WICHTIG: nur der Image-Name, KEIN Tag. Die Tags kommen aus dem
+          # tags-Block unten und werden angehaengt. Steht hier ":latest" mit
+          # drin, entsteht "host/vampirspiel:latest:latest" - zwei Doppelpunkte,
+          # kein gueltiger Image-Reference, und der Push bricht ab.
+          images: ${{ secrets.host }}/vampirspiel
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha,format=short
@@ -61,8 +61,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # Läuft auf x86-Proxmox. Für ARM zusätzlich linux/arm64 eintragen –
-          # das Lockfile hat die Bindings für beide.
+          # Laeuft auf x86-Proxmox. Fuer ARM zusaetzlich linux/arm64 eintragen -
+          # das Lockfile hat die Bindings fuer beide.
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
