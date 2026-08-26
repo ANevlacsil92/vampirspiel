@@ -1,0 +1,11 @@
+node_modules
+.nuxt
+.output
+.git
+.gitignore
+dist
+data
+*.log
+.DS_Store
+.env
+test

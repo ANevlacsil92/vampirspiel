@@ -1,0 +1,32 @@
+services:
+  vampirspiel:
+    build: .
+    # Lokal wird gebaut und unter diesem Namen getaggt. Für das Deployment von
+    # der Registry IMAGE in der .env setzen und die build-Zeile auskommentieren.
+    image: ${IMAGE:-vampirspiel:local}
+    container_name: vampirspiel
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      # Unbedingt ändern, bevor das Ding im Wald steht
+      DRACULA_PIN: "${DRACULA_PIN:-1897}"
+      ADMIN_PIN: "${ADMIN_PIN:-0666}"
+      DATA_DIR: /data
+      TZ: Europe/Vienna
+    volumes:
+      # Event-Log – überlebt Neustart und Update
+      - vampirspiel-data:/data
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  vampirspiel-data:

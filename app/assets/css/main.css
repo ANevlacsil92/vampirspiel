@@ -1,0 +1,333 @@
+/* ---------------------------------------------------------------------------
+   Vampirspiel – Nachtpalette.
+   Gespielt wird im Dunkeln: kein Weiß, keine großen hellen Flächen, keine
+   Töne, die aus zehn Metern noch leuchten. Die einzige Farbe im Interface
+   ist die Farbe der Strohhalme selbst.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --ink: #0b0d14;
+  --ink-2: #141826;
+  --ink-3: #1d2234;
+  --edge: #2a3149;
+  --moon: #c9cfe2;
+  --dim: #6e7794;
+  --blood: #a4161a;
+  --blood-dim: #5e1013;
+
+  --r: 14px;
+  --tap: 68px;
+
+  --pad: max(16px, env(safe-area-inset-left));
+  --pad-b: max(16px, env(safe-area-inset-bottom));
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#__nuxt {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--moon);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  overscroll-behavior-y: contain;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Typo-Rollen ---------------------------------------------------------- */
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+h2 {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* --- Gerüst --------------------------------------------------------------- */
+
+.shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--pad) var(--pad-b);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: max(12px, env(safe-area-inset-top)) 0 12px;
+  background: linear-gradient(var(--ink) 72%, transparent);
+}
+
+.topbar .grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--edge);
+  background: var(--ink-2);
+  color: var(--moon);
+  border-radius: var(--r);
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s ease, transform 0.08s ease;
+}
+
+.btn:active {
+  background: var(--ink-3);
+  transform: scale(0.985);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--moon);
+  outline-offset: 2px;
+}
+
+.btn[disabled] {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.btn--big {
+  min-height: var(--tap);
+  font-size: 18px;
+}
+
+.btn--danger {
+  border-color: var(--blood-dim);
+  color: #e8a5a7;
+}
+
+.btn--danger:active {
+  background: var(--blood-dim);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--dim);
+  padding: 10px 12px;
+}
+
+/* --- Karten --------------------------------------------------------------- */
+
+.card {
+  background: var(--ink-2);
+  border: 1px solid var(--edge);
+  border-radius: var(--r);
+  padding: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+input[type='text'],
+input[type='tel'],
+input[type='password'],
+input[type='number'],
+textarea {
+  background: var(--ink);
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  color: var(--moon);
+  font: inherit;
+  padding: 12px;
+  width: 100%;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--dim);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+/* --- Statuszeile ---------------------------------------------------------- */
+
+.pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dim);
+  flex: none;
+}
+.pip--online {
+  background: #3f9e5c;
+}
+.pip--offline {
+  background: #b8862f;
+}
+.pip--denied {
+  background: var(--blood);
+}
+
+.banner {
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid var(--edge);
+  background: var(--ink-2);
+}
+.banner--warn {
+  border-color: #6b5220;
+  color: #e6c47a;
+}
+.banner--bad {
+  border-color: var(--blood-dim);
+  color: #e8a5a7;
+}
+
+.muted {
+  color: var(--dim);
+  font-size: 14px;
+}
+
+/* --- Zähne ---------------------------------------------------------------- */
+
+.fangs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.fang {
+  width: 15px;
+  height: 25px;
+  flex: none;
+  display: block;
+}
+
+.fang path {
+  transition: fill 0.15s ease, opacity 0.15s ease;
+}
+
+@keyframes fang-snap {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.fang--new {
+  animation: fang-snap 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  transform-origin: 50% 20%;
+}
+
+/* --- Toast ---------------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: calc(var(--pad-b) + 8px);
+  max-width: 690px;
+  margin: 0 auto;
+  background: var(--ink-3);
+  border: 1px solid var(--edge);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 50;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+
+.toast .grow {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+}
+
+.toast {
+  animation: toast-in 0.16s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
