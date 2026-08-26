@@ -100,6 +100,7 @@ const hasProgress = computed(() => Object.keys(state.value?.teeth || {}).length 
                 v-for="v in state.vampires.filter(x => x.active)"
                 :key="v.id"
                 :color="v.color"
+                :color2="v.color2"
                 :label="v.label"
                 :filled="(state.teeth[`${g.id}|${v.id}`] || 0) > 0"
                 :count="state.teeth[`${g.id}|${v.id}`] || 0"
@@ -129,7 +130,7 @@ const hasProgress = computed(() => Object.keys(state.value?.teeth || {}).length 
             :style="{ opacity: v.active ? 1 : 0.4 }"
             @click="dispatch('toggleVampire', { vampireId: v.id, active: !v.active })"
           >
-            <Fang :color="v.color" :filled="v.active" style="width: 12px; height: 20px" />
+            <Fang :color="v.color" :color2="v.color2" :filled="v.active" style="width: 12px; height: 20px" />
             <span>{{ v.label }}</span>
             <span v-if="online.includes(v.id)" class="pip pip--online" />
           </button>
@@ -160,7 +161,7 @@ const hasProgress = computed(() => Object.keys(state.value?.teeth || {}).length 
               }"
               @click="toggleColor(p.label)"
             >
-              <Fang :color="p.color" filled style="width: 12px; height: 20px" />
+              <Fang :color="p.color" :color2="p.color2" filled style="width: 12px; height: 20px" />
               <span>{{ p.label }}</span>
             </button>
           </div>

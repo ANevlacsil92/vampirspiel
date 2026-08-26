@@ -148,6 +148,7 @@ const winners = computed(() => {
                 v-for="v in actives"
                 :key="v.id"
                 :color="v.color"
+                :color2="v.color2"
                 :label="v.label"
                 :filled="count(g.id, v.id) > 0"
                 :count="count(g.id, v.id)"
@@ -179,7 +180,7 @@ const winners = computed(() => {
                 }"
                 @click="toggle(v.id)"
               >
-                <Fang :color="v.color" filled style="width: 12px; height: 20px" />
+                <Fang :color="v.color" :color2="v.color2" filled style="width: 12px; height: 20px" />
                 <span>{{ v.label }}</span>
                 <span v-if="count(g.id, v.id) > 1" class="muted">×{{ count(g.id, v.id) }}</span>
               </button>

@@ -70,7 +70,7 @@ const wanted = ref<string | null>(null)
   <main class="shell">
     <div class="topbar">
       <div class="grow row" style="gap: 9px">
-        <Fang v-if="me" :color="me.color" filled style="width: 13px; height: 22px" />
+        <Fang v-if="me" :color="me.color" :color2="me.color2" filled style="width: 13px; height: 22px" />
         <strong>{{ me ? me.label : 'Vampir' }}</strong>
       </div>
       <ConnBadge />
@@ -113,7 +113,7 @@ const wanted = ref<string | null>(null)
           :style="{ opacity: takenIds.has(v.id) ? 0.45 : 1, justifyContent: 'flex-start' }"
           @click="wanted = v.id; pick(v.id)"
         >
-          <Fang :color="v.color" filled />
+          <Fang :color="v.color" :color2="v.color2" filled />
           <span style="flex: 1; text-align: left">
             {{ v.label }}
             <span v-if="takenIds.has(v.id)" class="eyebrow" style="display: block">belegt</span>
@@ -161,6 +161,7 @@ const wanted = ref<string | null>(null)
           <div v-if="mine(g.id) > 0" class="row" style="gap: 8px">
             <Fang
               :color="me!.color"
+              :color2="me!.color2"
               :label="me!.label"
               filled
               :count="mine(g.id)"

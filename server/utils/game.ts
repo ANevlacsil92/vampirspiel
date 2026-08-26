@@ -10,6 +10,8 @@ export interface Vampire {
   name: string
   /** Hex-Farbe des Strohhalms, z.B. "#d92b2b" */
   color: string
+  /** Zweite Farbe bei gestreiften Halmen. Fehlt bei einfarbigen. */
+  color2?: string
   /** Farbname zum Vorlesen, z.B. "Rot" */
   label: string
   /** Inaktive Vampire zählen nicht für den Sieg */
@@ -58,25 +60,6 @@ export interface Action {
 interface LoggedEvent extends Action {
   ts: number
 }
-
-// ---------------------------------------------------------------------------
-// Farbpalette der Strohhalme
-// ---------------------------------------------------------------------------
-
-export const STRAW_COLORS = [
-  { label: 'Rot', color: '#e0332f' },
-  { label: 'Blau', color: '#2f6fe0' },
-  { label: 'Grün', color: '#33b35a' },
-  { label: 'Gelb', color: '#e8c62c' },
-  { label: 'Orange', color: '#f0812e' },
-  { label: 'Pink', color: '#e653a8' },
-  { label: 'Lila', color: '#9b5de5' },
-  { label: 'Türkis', color: '#2fd0c5' },
-  { label: 'Weiß', color: '#f2f2f2' },
-  { label: 'Braun', color: '#9c6b42' },
-  { label: 'Schwarz', color: '#4a4a55' },
-  { label: 'Hellgrün', color: '#a8d64a' },
-]
 
 // ---------------------------------------------------------------------------
 // Persistenz
@@ -154,7 +137,12 @@ function reduce(a: Action, ts: number): boolean {
   switch (a.kind) {
     case 'setup': {
       const groupNames: string[] = a.payload.groups || []
-      const vamps: { label: string; color: string; name?: string }[] = a.payload.vampires || []
+      const vamps: {
+        label: string
+        color: string
+        color2?: string
+        name?: string
+      }[] = a.payload.vampires || []
 
       state.groups = groupNames.map((name, i) => ({
         id: slug('g', i + 1),
@@ -166,6 +154,8 @@ function reduce(a: Action, ts: number): boolean {
         name: (v.name || v.label).trim(),
         label: v.label,
         color: v.color,
+        // Nur setzen wenn vorhanden, sonst steht color2: undefined im Event-Log
+        ...(v.color2 ? { color2: v.color2 } : {}),
         active: true,
       }))
       state.teeth = {}

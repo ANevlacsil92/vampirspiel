@@ -7,6 +7,8 @@ export interface Vampire {
   id: string
   name: string
   color: string
+  /** Zweite Farbe bei gestreiften Halmen. Fehlt bei einfarbigen. */
+  color2?: string
   label: string
   active: boolean
 }
