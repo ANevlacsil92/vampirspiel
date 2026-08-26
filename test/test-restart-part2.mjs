@@ -1,4 +1,4 @@
-const ws = new WebSocket('ws://127.0.0.1:3000/_ws')
+const ws = new WebSocket(`ws://127.0.0.1:${process.env.TEST_PORT || 3000}/_ws`)
 const wait = ms => new Promise(r => setTimeout(r, ms))
 let state = null
 ws.addEventListener('message', e => {

@@ -1,6 +1,7 @@
 // Schneller End-to-End-Test gegen einen laufenden Server.
 // Aufruf: node test-e2e.mjs
-const URL = 'ws://127.0.0.1:3000/_ws'
+const PORT = process.env.TEST_PORT || 3000
+const URL = `ws://127.0.0.1:${PORT}/_ws`
 let failures = 0
 
 function check(name, cond) {
